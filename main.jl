@@ -1,18 +1,25 @@
 using FileIO: load, save
-import LibSndFile
+using LibSndFile
 using PortAudio
 using MP3
 
 println(PortAudio.devices())
 
-snd = load("アンドロイドガール.mp3")
+# snd = load("02 sleeping beauty.aiff")
+snd = LibSndFile.load("02 sleeping beauty.aiff")
 
-println("rate: ", snd.samplerate)
-println("channels: ", size(snd, 2))
-println("eltype: ", eltype(snd))
+sr = LibSndFile.samplerate(snd)
+nch = LibSndFile.channels(snd)
+nfrm = LibSndFile.frames(snd)
 
-buf = Array{Float32}(snd)
+println("rate: ", sr)
+println("channels: ", nch)
+println("eltype: ", nfrm)
 
-stream = PortAudioStream("MacBook Air Speakers", 0, 2, samplerate=44100)
+buf = reshape(buf, nch, :)'
+
+
+stream = PortAudioStream("MacBook Air Speakers", 0, nch, samplerate=sr)
 write(stream, buf)
 close(stream)
+LibSndFile.close(snd)

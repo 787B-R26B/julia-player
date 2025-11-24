@@ -29,6 +29,7 @@ JuliaLocalPreferences.toml
 *.mp3
 *.wav
 *.aif
+*.aiff
 *.flac
 *.ogg
 
